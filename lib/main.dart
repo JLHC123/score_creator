@@ -98,6 +98,7 @@ class _ScoreScreenState extends State<ScoreScreen> {
               children: [
                 Text('Value: ${scores[index]['scoreResult']}'),
                 Text('Date: ${scores[index]['dateCreated']}'),
+                Text('Name: ${scores[index]['user']['userName']}'),
               ],
             ),
           );
