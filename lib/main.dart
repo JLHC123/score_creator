@@ -84,12 +84,16 @@ class _ScoreScreenState extends State<ScoreScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Score List')),
+      appBar: AppBar(
+          title: const Center(
+              child: Text('Score List'))),
       body: ListView.builder(
         itemCount: scores.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text('Score ID: ${scores[index]['scoreId']}'),
+            title: Center(
+              child: Text('Score ID: ${scores[index]['scoreId']}'),
+            ),
             subtitle: Column(
               children: [
                 Text('Value: ${scores[index]['scoreResult']}'),
