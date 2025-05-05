@@ -35,9 +35,9 @@ class _ScoreScreenState extends State<ScoreScreen> {
   // Helper function to switch between Web and Emulator
   String getBaseUrl() {
     if (kIsWeb) {
-      return 'https://localhost:7240'; // 🌐 Web (Edge/Chrome/Firefox)
+      return 'https://localhost:7240'; // Edge
     } else {
-      return 'https://10.0.2.2:7240'; // 📱 Android Emulator
+      return 'https://10.0.2.2:7240'; // Android Emulator
     }
   }
 
@@ -45,10 +45,8 @@ class _ScoreScreenState extends State<ScoreScreen> {
     http.Client client;
 
     if (kReleaseMode || kIsWeb) {
-      // ✅ Production or Web (real certs or browser handles SSL)
       client = http.Client();
     } else {
-      // 🧪 Dev mode on Android emulator - bypass bad SSL
       final ioc = HttpClient()
         ..badCertificateCallback =
             (X509Certificate cert, String host, int port) => true;
@@ -57,7 +55,7 @@ class _ScoreScreenState extends State<ScoreScreen> {
 
     try {
       final response = await client.get(
-        Uri.parse('${getBaseUrl()}/GetScores'),
+        Uri.parse('${getBaseUrl()}/GetScoresSorted'),
         headers: {'Content-Type': 'application/json'},
       );
 
@@ -92,13 +90,12 @@ class _ScoreScreenState extends State<ScoreScreen> {
         itemBuilder: (context, index) {
           return ListTile(
             title: Center(
-              child: Text('Score ID: ${scores[index]['scoreId']}'),
+              child: Text('Name: ${scores[index]['user']['userName']}'),
             ),
             subtitle: Column(
               children: [
                 Text('Value: ${scores[index]['scoreResult']}'),
                 Text('Date: ${scores[index]['dateCreated']}'),
-                Text('Name: ${scores[index]['user']['userName']}'),
               ],
             ),
           );
