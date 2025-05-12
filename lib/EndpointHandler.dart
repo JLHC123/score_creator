@@ -44,4 +44,37 @@ class EndpointHandler{
       client.close();
     }
   }
+
+  Future<String> loginUser(String username, String password) async
+  {
+    http.Client client;
+
+    if (kReleaseMode || kIsWeb) {
+      client = http.Client();
+    } else {
+      final ioc = HttpClient()
+        ..badCertificateCallback =
+            (X509Certificate cert, String host, int port) => true;
+      client = IOClient(ioc);
+    }
+
+    try {
+      final response = await client.post(
+        Uri.parse('${getBaseUrl()}/Auth/Login'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'username': username, 'password': password}),
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('Login failed: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error during login: $e');
+    } finally {
+      client.close();
+    }
+
+  }
 }
