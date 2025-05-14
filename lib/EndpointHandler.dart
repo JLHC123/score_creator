@@ -60,15 +60,15 @@ class EndpointHandler{
 
     try {
       final response = await client.post(
-        Uri.parse('${getBaseUrl()}/Auth/Login'),
+        Uri.parse('${getBaseUrl()}/Login'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'username': username, 'password': password}),
+        body: jsonEncode({'UserName': username, 'Password': password}),
       );
 
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        return "Login successful";
       } else {
-        throw Exception('Login failed: ${response.statusCode}');
+        return "Invalid username or password";
       }
     } catch (e) {
       throw Exception('Error during login: $e');

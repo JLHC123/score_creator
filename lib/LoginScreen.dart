@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:score_creator/EndpointHandler.dart';
+import 'package:score_creator/GlobalScoreScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,6 +14,29 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final EndpointHandler _endpointHandler = EndpointHandler();
+
+  void _attemptLogin() async {
+    String username = _usernameController.text.trim();
+    String password = _passwordController.text.trim();
+
+    try {
+      String message = await _endpointHandler.loginUser(username, password);
+      if (message == "Login successful") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const GlobalScoreScreen()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message)),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login failed: $e')),
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -34,6 +58,10 @@ class _LoginScreenState extends State<LoginScreen> {
               TextField(
                 controller: _passwordController,
                 decoration: const InputDecoration(labelText: "Password"),
+              ),
+              ElevatedButton(
+                onPressed: _attemptLogin,
+                child: const Text("Login"),
               )
             ],
           )
