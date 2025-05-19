@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:score_creator/EndpointHandler.dart';
 import 'package:score_creator/GlobalScoreScreen.dart';
+import 'UserScoreScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -24,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (message == "Login successful") {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const GlobalScoreScreen()),
+          MaterialPageRoute(builder: (context) => const UserScoreScreen()),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
