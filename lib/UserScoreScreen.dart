@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'EndpointHandler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'GlobalScoreScreen.dart';
 
 class UserScoreScreen extends StatefulWidget {
   const UserScoreScreen({super.key});
@@ -40,22 +41,39 @@ class _UserScoreScreenState extends State<UserScoreScreen> {
       appBar: AppBar(
           title: const Center(
               child: Text('User Score List'))),
-      body: ListView.builder(
-        itemCount: scores.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Center(
-              child: Text('Name: ${scores[index]['user']['userName']}'),
+      body: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context, 
+                MaterialPageRoute(
+                  builder: (context) => const GlobalScoreScreen(),
+                ),
+              );
+            },
+            child: const Text('Global Scores'),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: scores.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Center(
+                    child: Text('Name: ${scores[index]['user']['userName']}'),
+                  ),
+                  subtitle: Column(
+                    children: [
+                      Text('Value: ${scores[index]['scoreResult']}'),
+                      Text('Date: ${scores[index]['dateCreated']}'),
+                    ],
+                  ),
+                );
+              },
             ),
-            subtitle: Column(
-              children: [
-                Text('Value: ${scores[index]['scoreResult']}'),
-                Text('Date: ${scores[index]['dateCreated']}'),
-              ],
-            ),
-          );
-        },
-      ),
+          )
+        ],
+      )
     );
   }
 }
